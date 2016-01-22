@@ -1,0 +1,39 @@
+The aim of this analysis using data visualization techniques in Tableau is to design a strategy to motivate customers to complete more number of tests provided on the website. Using the 'dognition_data_aggregated_by_dogid' dataset, we try to identify the features of dogs or their owners which are correlated with higher test completion intensity. 
+
+Overview of the dataset:
+Figures 1-11 provide an overview of the dataset. Below are some useful findings obtained from data visualization:
+Number of unique dogs in the dataset represented by 'Dog ID' = 17,986 (Fig. 1)
+Number of unique human users in the dataset represented by 'User ID' = 16,261 (Fig. 2) 
+Number of breeds in the dataset represented by 'Breed' = 1,326 (Fig. 3)
+Fig. 4 represents the number of dogs for each breed type. Most number of dogs fall under 'Pure Breed' category.
+Fig. 5 represents the number of dogs by gender and both male and female dogs are nearly equal in number.
+Fig. 6 provides the age distribution of the dogs in the dataset.
+Fig. 7 provides the information about breed group of the dogs. Amongst known breed groups, 'Sporting' dogs coma at the top while 'Hound' dogs at the last.
+Fig. 8 classifies the dogs (completing atleast 20 tests) into a personality trait category, represented by 'Dimension' in the dataset.
+Fig. 9 and Fig. 10 (Scatter plot) shows the distribution of 'Sign In Count' variable and clearly displays the extreme values(outliers).
+Fig. 11 displays the distribution of 'Sign In Count' variable after removing the outliers (Sign In Count > 175)
+Lots of strange values are found for 'State' variable in the dataset. 
+
+Next, in Fig. 12, we examine how the dog's breed type affects his test completion metric. Fig. 12 shows that test completion metric doesn't depend upon breed type of the dog.
+
+Fig. 13 shows the median of number of tests completed for each breed group. We observe that 'Toy' breed group performs the worst in terms of number of tests completed. 
+
+Fig. 14 represents the median of tests completed for both categories of dogs - one whose DNA was tested and another whose DNA was not tested. From the figure, we don't observe any difference in both the categories.
+
+Fig. 15 shows the tests completed by breed type and whether the dog was tested for DNA or not. Dogs of cross-breed type whose DNA was tested show significant higher value for tests completed than all other types of dogs. This finding leads to the conclusion that the owners who intend to cross breed their dogs may be more interested in getting the dog's DNA tested and mainly in knowing more about the personality traits of their dogs due to which they are more motivated to complete more number of cognition tests about their dogs.
+
+Fig. 16 represents the tests completed by breed type and whether the owner got his dog fixed or not. Dogs of all breed types except cross-bred dogs, which were neutered show a significant higher value for number of tests completed in comparison to non-fixed dogs. This leads to the conclusion that the owners who are more interested in knowing about their dogs, got them neutered and are hence more motivated to complete more number of tests.
+
+Fig. 17 represents the distribution of customers across all the countries. Most number of users are found to be in United States.
+
+Fig. 18 represents the distribution of customers across all the states within United States. Most number of users are found to be in California.
+
+Fig. 19 represents the relationship between inter test intervals (ITIs) and number of tests completed. Regression results suggest a significant negative correlation between median ITIs and number of tests completed which leads us to believe that customers who complete tests quickly are more likely to complete more tests overall. 
+
+
+
+
+
+
+
+ 
