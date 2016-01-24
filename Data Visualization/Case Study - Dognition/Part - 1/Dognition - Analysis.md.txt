@@ -1,4 +1,4 @@
-The aim of this analysis using data visualization techniques in Tableau is to design a strategy to motivate customers to complete more number of tests provided on the website. Using the 'dognition_data_aggregated_by_dogid' dataset, we try to identify the features of dogs or their owners which are correlated with higher test completion intensity. 
+The aim of this analysis using data visualization techniques in Tableau is to understand factors influencing test completion levels by customers on the Dognition's website. Using the 'dognition_data_aggregated_by_dogid' dataset, we try to identify the features of dogs or their owners which are correlated with higher test completion intensity. 
 
 Overview of the dataset:
 Figures 1-11 provide an overview of the dataset. Below are some useful findings obtained from data visualization:
