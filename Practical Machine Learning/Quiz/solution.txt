@@ -1,0 +1,158 @@
+## Question 1
+
+library(ElemStatLearn)
+# Loading training set
+data(vowel.train)
+# Loading testing set
+data(vowel.test)
+
+# Converting outcome variable to factor variable
+vowel.train$y <- as.factor(vowel.train$y)
+vowel.test$y <- as.factor(vowel.test$y)
+
+set.seed(33833)
+library(caret)
+library(gbm)
+
+# Fitting random forest model on training set to predict outcome 
+modFit1 <- train(y ~ ., method = "rf", data = vowel.train, prox = TRUE)
+# Fitting boosting model on training set to predict outcome
+modFit2 <- train(y ~ ., method = "gbm", data = vowel.train, verbose = FALSE)
+
+# Predicting outcome from random forest model on test set 
+pred1 <- predict(modFit1, newdata = vowel.test)
+table(pred1, vowel.test$y)
+# Evaluating accuracy of predictions obtained from random forest model
+sum(pred1 == vowel.test$y)/nrow(vowel.test)				
+confusionMatrix(pred1, vowel.test$y)
+
+# Predicting outcome from boosting model on test set
+pred2 <- predict(modFit2, newdata = vowel.test)
+table(pred2, vowel.test$y)
+# Evaluating accuracy of predictions obtained from boosting model
+sum(pred2 == vowel.test$y)/nrow(vowel.test)
+confusionMatrix(pred2, vowel.test$y)				
+
+# Creating a dataset containing above model's predictions and actual values of outcome variable
+predDF <- data.frame(pred1, pred2, y = vowel.test$y)
+# Fitting the aggregate boosting model taking predictors as predictions from both models above
+combModFit <- train(y ~ ., method = "gbm", data = predDF)
+combPred <- predict(combModFit, predDF)
+# Evaluating accuracy of predictions
+sum(combPred == predDF$y)/length(combPred)	
+confusionMatrix(combPred, predDF$y)
+
+
+## Question 2
+
+library(caret)
+library(gbm)
+set.seed(3433)
+library(AppliedPredictiveModeling)
+data(AlzheimerDisease)
+
+# Creating training and test sets
+adData <- data.frame(diagnosis,predictors)
+inTrain <- createDataPartition(adData$diagnosis, p = 3/4)[[1]]
+training <- adData[ inTrain,]
+testing <- adData[-inTrain,]
+
+set.seed(62433)
+# Fitting random forest model on training set to predict outcome 
+modFit1 <- train(diagnosis ~ ., method = "rf", data = training, prox = TRUE)
+# Predicting outcome from random forest model on test set 
+pred1 <- predict(modFit1, newdata = testing)
+# Evaluating accuracy of predictions obtained from random forest model
+sum(pred1 == testing$diagnosis)/length(pred1)	
+confusionMatrix(pred1, testing$diagnosis)	
+
+# Fitting boosting model on training set to predict outcome 
+modFit2 <- train(diagnosis ~ ., method = "gbm", data = training, verbose = FALSE)
+# Predicting outcome from boosting trees model on test set 
+pred2 <- predict(modFit2, newdata = testing)
+# Evaluating accuracy of predictions obtained from boosting model
+sum(pred2 == testing$diagnosis)/length(pred2)	
+confusionMatrix(pred2, testing$diagnosis)
+
+# Fitting Linear discriminant analysis model on training set to predict outcome
+modFit3 <- train(diagnosis ~ ., method = "lda", data = training)
+# Predicting outcome from Linear discriminant analysis model on test set 
+pred3 <- predict(modFit3, newdata = testing)
+# Evaluating accuracy of predictions obtained from Linear discriminant analysis model
+sum(pred3 == testing$diagnosis)/length(pred3)
+confusionMatrix(pred3, testing$diagnosis)
+
+# Creating a dataset containing above model's predictions and actual values of outcome variable
+predDF <- data.frame(pred1, pred2, pred3, diagnosis = testing$diagnosis)
+# Fitting the stacked random forests model taking predictors as predictions from models above
+combModFit <- train(diagnosis ~ ., method = "rf", data = predDF)
+combPred <- predict(combModFit, predDF)
+# Evaluating accuracy of predictions
+sum(combPred == predDF$diagnosis)/length(combPred)
+confusionMatrix(combPred, predDF$diagnosis)
+
+
+## Question 3
+
+set.seed(3523)
+library(AppliedPredictiveModeling)
+data(concrete)
+
+# Creating training and test sets
+inTrain <- createDataPartition(concrete$CompressiveStrength, p = 3/4)[[1]]
+training <- concrete[inTrain,]
+testing <- concrete[-inTrain,]
+
+set.seed(233)
+library(elasticnet)
+# Fitting Lasso model on training set
+modFit <- train(CompressiveStrength ~ ., method = "lasso", data = training)
+# Predicting outcome on test set
+pred <- predict(modFit, newdata = testing)
+plot.enet(modFit$finalModel, xvar = "penalty", use.color = TRUE)
+
+
+## Question 4
+
+# Download and reading the required dataset
+con <- "https://d396qusza40orc.cloudfront.net/predmachlearn/gaData.csv"
+download.file(con, "C:/quiz.csv")
+dat <- read.csv("C:/quiz.csv")
+
+# Creating training and test sets
+library(lubridate)
+training <- dat[year(dat$date) < 2012,]
+testing <- dat[(year(dat$date)) > 2011,]
+# Setting as time series data
+tstrain <- ts(training$visitsTumblr)
+
+# Fitting the BATS model to time series training data
+library(forecast)
+modFit <- bats(tstrain)
+
+# Forecasting for test set with 95% confidence intervals
+fcast <- forecast(modFit, h = nrow(testing), level = 95)
+
+# Evaluating the percentage of samples for which forecasts lie within 95% confidence interval range
+names(fcast)
+sum((testing$visitsTumblr > fcast$lower) & (testing$visitsTumblr < fcast$upper))/length(testing$visitsTumblr)
+
+## Question 5
+
+set.seed(3523)
+library(AppliedPredictiveModeling)
+data(concrete)
+
+# Creating training and test sets
+inTrain <- createDataPartition(concrete$CompressiveStrength, p = 3/4)[[1]]
+training <- concrete[inTrain,]
+testing <- concrete[-inTrain,]
+
+set.seed(325)
+# Fitting Support Vector machines model on the training set
+modFit <- svm(CompressiveStrength ~ ., data = training)
+# Predicting on testing set
+pred <- predict(modFit, testing)
+
+# Computing RMSE of SVM model on test set
+RMSE(pred, testing$CompressiveStrength)
